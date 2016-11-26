@@ -20,7 +20,7 @@ public class Entrenamiento {
     private Vector datosVueltas; // Almacena datos de todas las vueltas
     
     Entrenamiento(){
-        datosVueltas= new Vector(10,2); // En cada entrenamiento se realizan 10 vueltas
+        datosVueltas= new Vector(4,2); // En cada entrenamiento se realizan 10 vueltas
         vuelta= new Vuelta();
     }
     
@@ -30,6 +30,8 @@ public class Entrenamiento {
         {            
             datosVueltas.addElement(vuelta);
             vuelta.borrarPistas();          // reinicia conteo
+            
+            
         }
         
             
@@ -60,11 +62,12 @@ class Vuelta
 {
     
     private int tiempoVuelta;       // Tiempo total por vuelta
-    private Vector tiempoPista;   // Tiempo recorrido en cada pista
+    private int[] tiempoPista;   // Tiempo recorrido en cada pista
+    
 
     public Vuelta()
     {
-        tiempoPista= new Vector(4);     // Maximo 4 pistas
+        tiempoPista= new int[4];     // Maximo 4 pistas
     }
     
        
@@ -73,28 +76,53 @@ class Vuelta
         return tiempoVuelta;        
     }
     
-    public Enumeration getTiemposPistas()
+    public int[] getTiemposPistas()
     {
-        return tiempoPista.elements();
+        return tiempoPista;
+        
+    }
+    
+    /**
+     * Regresa el numero de elementos contenidos en el arreglo tiempoPista
+     * y lo almacena en tiempoPistaLength
+     * @return 
+     */
+    public int getTiempoPistaLength()
+    {
+        int tiempoPistaLength=0;
+        
+        for(int i=0;i<tiempoPista.length;i++)
+            if(tiempoPista[i]!=0)
+                    tiempoPistaLength++;
+        
+        return tiempoPistaLength;
+        
     }
     
     public boolean setTiempoPista(int tiempo)
     {
+        int index=0,temp=0;
         
-        if(tiempoPista.size()<=4)
-        {
-            tiempoVuelta+=tiempo;
-            tiempoPista.addElement(new Integer(tiempo));
-            return true;
-        }
+        index=getTiempoPistaLength()+1;
+        
+        
+        tiempoVuelta+=tiempo;
+        if(index>1)
+            temp= tiempoPista[index-2];
+
+        tiempoPista[index-1]=tiempo-temp;
+            
+        if(++index ==5)
+            return false;
         else
-            return false;           
+            return true;
+               
         
     }
     
     public void borrarPistas()
     {
-        tiempoPista.removeAllElements();
+        tiempoPista= new int[4];
     }
     
  

@@ -110,26 +110,26 @@ public class PantallaPrincipal extends Form implements CommandListener {
         temp=(int)cronometro.getTiempoCron();
         
         caminata.marcarTiempos(temp);
-        actualizarVista();        
+        //actualizarVista();        
     }
     
-    private void actualizarVista()
-    {
-        Enumeration tp;
-         //tiempoContado.setLabel(caminata.);
-         tiempoVueltaAnterior.setLabel(caminata.getTiempoVueltaAnterior());
-         
-         totalVueltas.setLabel(Integer.toString(caminata.getNumeroVueltas()));
-         
-         tp=caminata.getVueltaActual().getTiemposPistas();
-         
-        for (int i=0; tp.hasMoreElements() ;i++) 
-        {
-             pista[i].setLabel(tp.nextElement().toString());
-            
-        }
-         
-    }
+//    private void actualizarVista()
+//    {
+//        Enumeration tp;
+//         //tiempoContado.setLabel(caminata.);
+//         tiempoVueltaAnterior.setLabel(caminata.getTiempoVueltaAnterior());
+//         
+//         totalVueltas.setLabel(Integer.toString(caminata.getNumeroVueltas()));
+//         
+//         tp=caminata.getVueltaActual().getTiemposPistas();
+//         
+//        for (int i=0; tp.hasMoreElements() ;i++) 
+//        {
+//             pista[i].setLabel(tp.nextElement().toString());
+//            
+//        }
+//         
+//    }
     
 
     public void commandAction(Command c, Displayable d)
