@@ -28,12 +28,13 @@ public class PantallaPrincipal extends Form implements CommandListener {
      private Command cmdSalir;
      private Command cmdPausa;
      private Command cmdContinuar;  
-     private Command cmdMarcar; 
+     private Command cmdMarcar;      
      private Cronometro cronometro;
-     private StringItem tiempoContado;
-     private StringItem tiempoVueltaAnterior;
-     private StringItem totalVueltas;
-     private StringItem pista[];
+     
+     private StringItem tiempoContado;                  // Tiempo Total
+     private StringItem tiempoVueltaAnterior;          // vuelta anterior
+     private StringItem totalVueltas;                  // Total Vueltas
+     private StringItem pista[];                       // Tiempo de cada pista (4)
      
      private Entrenamiento caminata;
      private PantallaResultados estadisticas;
@@ -110,26 +111,29 @@ public class PantallaPrincipal extends Form implements CommandListener {
         temp=(int)cronometro.getTiempoCron();
         
         caminata.marcarTiempos(temp);
-        //actualizarVista();        
+        actualizarVista();        
     }
     
-//    private void actualizarVista()
-//    {
-//        Enumeration tp;
-//         //tiempoContado.setLabel(caminata.);
-//         tiempoVueltaAnterior.setLabel(caminata.getTiempoVueltaAnterior());
-//         
-//         totalVueltas.setLabel(Integer.toString(caminata.getNumeroVueltas()));
-//         
-//         tp=caminata.getVueltaActual().getTiemposPistas();
-//         
-//        for (int i=0; tp.hasMoreElements() ;i++) 
-//        {
-//             pista[i].setLabel(tp.nextElement().toString());
-//            
-//        }
-//         
-//    }
+    private void actualizarVista()
+    {
+        int pistas[];
+         
+        //tiempoContado.setLabel(caminata.);
+        
+        tiempoVueltaAnterior.setText(caminata.getTiempoVueltaAnterior());
+         
+        totalVueltas.setText(Integer.toString(caminata.getNumeroVueltas()));
+         
+               
+        pistas= caminata.getVueltaActual().getTiemposPistas();
+         
+        for (int i=0; i<pistas.length ;i++) 
+        {
+             pista[i].setText(Cronometro.DameFormatoHora(pistas[i]));
+            
+        }
+         
+    }
     
 
     public void commandAction(Command c, Displayable d)

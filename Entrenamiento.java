@@ -29,7 +29,8 @@ public class Entrenamiento {
         if(!vuelta.setTiempoPista(tiempo)) // si no se pudo agregar tiempo
         {            
             datosVueltas.addElement(vuelta);
-            vuelta.borrarPistas();          // reinicia conteo
+            vuelta= new Vuelta();     
+            
             
             
         }
@@ -40,9 +41,15 @@ public class Entrenamiento {
     public String getTiempoVueltaAnterior()
     {
             Vuelta temp;
-            temp=(Vuelta) datosVueltas.lastElement();
+            if(datosVueltas.isEmpty())
+                return "00:00:00:00";
+            else
+            {
+                temp=(Vuelta) datosVueltas.lastElement();
+                return Cronometro.DameFormatoHora(temp.getTiempoVuelta());
+                
+            }
             
-            return Integer.toString(temp.getTiempoVuelta());
     }
     
     public int getNumeroVueltas()
@@ -120,10 +127,7 @@ class Vuelta
         
     }
     
-    public void borrarPistas()
-    {
-        tiempoPista= new int[4];
-    }
+   
     
  
 }

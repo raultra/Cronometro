@@ -30,7 +30,7 @@ class Cronometro extends TimerTask {
          return contador;
      }
      
-     public String DameFormatoHora(long millis){
+    public static String DameFormatoHora(long millis){
          String Hora;
          long centesimas, segundos,minutos,horas;
          centesimas=millis%100;
