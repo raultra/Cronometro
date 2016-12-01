@@ -24,16 +24,15 @@ public class Entrenamiento {
         vuelta= new Vuelta();
     }
     
-    public void marcarTiempos(int tiempo)
+    public boolean marcarTiempos(int tiempo)
     {
         if(!vuelta.setTiempoPista(tiempo)) // si no se pudo agregar tiempo
         {            
             datosVueltas.addElement(vuelta);
-            vuelta= new Vuelta();     
-            
-            
-            
+            return true;                // Nuevo conteo vuelta
         }
+        
+        return false;
         
             
     }
@@ -60,6 +59,11 @@ public class Entrenamiento {
     public Vuelta getVueltaActual()
     {
         return vuelta;
+    }
+    
+    public void reiniciarVuelta()       // Recuenta tiempos de pistas
+    {
+        vuelta= new Vuelta(); 
     }
 }
 
@@ -113,14 +117,17 @@ class Vuelta
         index=getTiempoPistaLength()+1;
         
         
-        tiempoVuelta+=tiempo;
+        
         if(index>1)
             temp= tiempoPista[index-2];
 
         tiempoPista[index-1]=tiempo-temp;
             
         if(++index ==5)
+        {
+            tiempoVuelta=tiempo;        // Guarda el tiempo de la vuelta completa
             return false;
+        }
         else
             return true;
                

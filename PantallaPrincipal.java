@@ -108,10 +108,15 @@ public class PantallaPrincipal extends Form implements CommandListener {
     public void marcarCron()
     {
         int temp;
+        boolean i;
+        
         temp=(int)cronometro.getTiempoCron();
         
-        caminata.marcarTiempos(temp);
-        actualizarVista();        
+        i=caminata.marcarTiempos(temp);
+        actualizarVista();
+        if(i) 
+            caminata.reiniciarVuelta();
+        
     }
     
     private void actualizarVista()
