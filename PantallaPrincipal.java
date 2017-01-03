@@ -4,6 +4,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Form;
 
+import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.StringItem;
 import javax.microedition.midlet.MIDlet;
 
@@ -39,7 +40,9 @@ public class PantallaPrincipal extends Form implements CommandListener {
      private Entrenamiento caminata;
      private PantallaResultados estadisticas;
      
-     
+     private int contadorPistas=0;
+     private int tiempoActual=0;
+     private int tiempoAnterior=0;
 
      PantallaPrincipal(MIDlet a){
          super("Cronómetro");
@@ -50,10 +53,10 @@ public class PantallaPrincipal extends Form implements CommandListener {
          cmdContinuar=new Command("Continuar",Command.OK,1);
          cmdMarcar=new Command("Marcar",Command.OK,0);
          
-         tiempoContado = new StringItem("Tiempo Total: ", "00:00:00:00");
-         tiempoVueltaAnterior = new StringItem("Vuelta anterior: ", "00:00:00:00");
+         tiempoContado = new StringItem("Tiempo:", "00:00:00:00");
+         tiempoVueltaAnterior = new StringItem("L x P:", "00:00:00:00");
          
-         totalVueltas = new StringItem("Número de vueltas", "00");
+         totalVueltas = new StringItem("Vuelta:", "00");
          pista= new StringItem[4];
          
          pista[0]= new StringItem("Tiempo Pista 1: ", "00:00:00:00");
@@ -78,8 +81,11 @@ public class PantallaPrincipal extends Form implements CommandListener {
 
      public void iniciarCron()
      {
+         Display.getDisplay(app).vibrate(100);
+         tiempoActual=0;
+         tiempoAnterior=0;
          caminata= new Entrenamiento();
-         cronometro=new Cronometro(tiempoContado);
+         cronometro=new Cronometro(tiempoContado,tiempoVueltaAnterior);
          cronometro.Iniciar();
          this.removeCommand(cmdIniciar);
          //this.removeCommand(cmdSalir);
@@ -109,37 +115,72 @@ public class PantallaPrincipal extends Form implements CommandListener {
     {
         int temp;
         boolean i;
+        Display.getDisplay(app).vibrate(200);
         
-        temp=(int)cronometro.getTiempoCron();
+        tiempoActual=(int)cronometro.getTiempoCron();
+        cronometro.resetLapso();
+        //tiempoVueltaAnterior.setText(Cronometro.DameFormatoHora(tiempoActual));
+        temp=tiempoActual-tiempoAnterior;
         
+        mostrarPistas(temp);
         i=caminata.marcarTiempos(temp);
-        actualizarVista();
-        if(i) 
-            caminata.reiniciarVuelta();
+        tiempoAnterior= tiempoActual;
+        actualizarVista(i);
+//        if(i) 
+//            caminata.reiniciarVuelta();
         
     }
     
-    private void actualizarVista()
+    private void actualizarVista(boolean r)
     {
         int pistas[];
          
         //tiempoContado.setLabel(caminata.);
         
-        tiempoVueltaAnterior.setText(caminata.getTiempoVueltaAnterior());
+        //tiempoVueltaAnterior.setText(caminata.getTiempoVueltaAnterior());
          
         totalVueltas.setText(Integer.toString(caminata.getNumeroVueltas()));
          
-               
-        pistas= caminata.getVueltaActual().getTiemposPistas();
-         
-        for (int i=0; i<pistas.length ;i++) 
-        {
-             pista[i].setText(Cronometro.DameFormatoHora(pistas[i]));
-            
-        }
+//        if(!r)
+//        {
+//            pistas= caminata.getVueltaActual().getTiemposPistas();
+//
+//            for (int i=0; i<pistas.length ;i++) 
+//            {
+//                 pista[i].setText(Cronometro.DameFormatoHora(pistas[i]));
+//
+//            }
+//        }
+//        else
+//            resetPistas();
          
     }
     
+    private void mostrarPistas(int temp)
+    {
+        if(contadorPistas==0) 
+            resetPistas();
+        
+        pista[contadorPistas].setText(Cronometro.DameFormatoHora(temp));
+         
+         if(contadorPistas<3)
+             contadorPistas++;
+         else
+             contadorPistas=0;
+             
+         
+    }
+             
+    
+    private void resetPistas()
+    {
+        String t = "00:00:00:00";
+        
+         pista[0].setText(t);
+         pista[1].setText(t);
+         pista[2].setText(t);
+         pista[3].setText(t);
+    }
 
     public void commandAction(Command c, Displayable d)
     {

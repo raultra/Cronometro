@@ -10,6 +10,7 @@ public class MIDletCronometro extends MIDlet {
 
      public MIDletCronometro(){
                      pantalla=Display.getDisplay(this);
+                    
                      formulario= new PantallaPrincipal(this);
 
      }
